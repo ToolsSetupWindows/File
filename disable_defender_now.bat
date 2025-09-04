@@ -10,8 +10,8 @@ if not "%errorlevel%"=="0" (
     exit /b
 )
 
-echo Dang tat dich vu Windows Defender...
-
+echo Dang tat tam thoi dich vu Windows Defender...
+echo Se tu dong bat Windows Defender khi khoi dong lai may tinh.
 :: Tắt dịch vụ Windows Defender
 sc stop WinDefend >nul 2>&1
 if not errorlevel 1 (
