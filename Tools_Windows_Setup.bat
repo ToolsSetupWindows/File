@@ -13,6 +13,23 @@ title Tat tam thoi Windows Defender + Tai file GitHub
 color 0A
 
 :: ========================
+:: KIỂM TRA INTERNET TRƯỚC TIÊN
+:: ========================
+:CHECK_INTERNET
+echo Dang kiem tra ket noi Internet...
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "$ProgressPreference='SilentlyContinue'; function Test-Url([string]$u){try{(Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 5).StatusCode -lt 400}catch{ $false }}; if( (Test-Url 'https://www.msftconnecttest.com/connecttest.txt') -or (Test-Url 'https://www.google.com/generate_204') ){ exit 0 } else { exit 1 }"
+if %errorlevel%==0 (
+  echo [+] Da co ket noi Internet.
+  echo.
+) else (
+  echo [!] Vui long ket noi Internet. Se tu thu lai sau 30 giay...
+  timeout /t 30 /nobreak >nul
+  echo.
+  goto :CHECK_INTERNET
+)
+
+:: ========================
 :: KIỂM TRA QUYỀN ADMIN
 :: ========================
 net session >nul 2>&1
@@ -69,6 +86,7 @@ if exist "%FILE1%" (
 
 if exist "%FILE2%" (
   echo [+] San sang: Tools_Windows_Setup.exe
+  echo -------------------------------------
   echo Dang mo Tools_Windows_Setup.exe...
   start "" "%FILE2%"
 ) else (
@@ -77,5 +95,5 @@ if exist "%FILE2%" (
 
 echo.
 echo Hoan tat.
-pause
 endlocal
+exit
