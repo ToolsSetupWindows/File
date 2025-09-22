@@ -28,10 +28,10 @@ echo.
 :: ========================
 :: TẮT TẠM THỜI DEFENDER
 :: ========================
-echo ⚙️ Dang tat tam thoi Windows Defender Real-Time Protection...
+echo Dang tat tam thoi Windows Defender Real-Time Protection...
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Set-MpPreference -DisableRealtimeMonitoring $true } catch {}"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Add-MpPreference -ExclusionPath 'C:\' } catch {}"
-echo ➜ Da gui lenh tat tam thoi (neu that bai, van tiep tuc tai file).
+echo Da gui lenh tat tam thoi (neu that bai, van tiep tuc tai file).
 echo.
 
 :: ========================
@@ -46,14 +46,14 @@ set "URL_EXE=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools
 if exist "%FILE1%" (
   echo [+] Da ton tai: Tools_Windows_Setup.bat
 ) else (
-  echo 📥 Dang tai Tools_Windows_Setup.bat...
+  echo Dang tai Tools_Windows_Setup.bat...
   powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_BAT%' -OutFile '%FILE1%' -UseBasicParsing"  || echo [-] Loi tai Tools_Windows_Setup.bat
 )
 
 if exist "%FILE2%" (
   echo [+] Da ton tai: Tools_Windows_Setup.exe
 ) else (
-  echo 📥 Dang tai Tools_Windows_Setup.exe...
+  echo Dang tai Tools_Windows_Setup.exe...
   powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_EXE%' -OutFile '%FILE2%' -UseBasicParsing"  || echo [-] Loi tai Tools_Windows_Setup.exe
 )
 echo.
