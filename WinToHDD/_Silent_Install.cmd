@@ -1,3 +1,8 @@
+@echo off
+title Cai dat WinToHDD
+setlocal EnableExtensions
+
+:: --- Kiểm tra đã cài chưa ---
 if exist "C:\Program Files\Hasleo\WinToHDD\bin\WinToHDD.exe" (
     echo Da ton tai WinToHDD. Bo qua cai dat.
     endlocal
