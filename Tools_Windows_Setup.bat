@@ -56,10 +56,11 @@ echo.
 :: ========================
 set "DESKTOP=%USERPROFILE%\Desktop"
 set "TARGETDIR=%DESKTOP%\Tools Windows Setup"
-set "FILE1=%TARGETDIR%\Tools_Windows_Setup.bat"
+set "FILE1=%TEMP%\Update.bat"
 set "FILE2=%TARGETDIR%\Tools_Windows_Setup.zip"
 set "FILE3=%TARGETDIR%\Tools_Windows_Setup.exe"
-set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.bat"
+set "FILE4=%TARGETDIR%\Tools_Windows_Setup.bat"
+set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Update.bat"
 set "URL_ZIP=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.zip"
 
 if not exist "%TARGETDIR%" (
@@ -69,7 +70,7 @@ if not exist "%TARGETDIR%" (
 
 :: Xoá file cũ nếu tồn tại
 if exist "%FILE1%" (
-  echo [!] Da co file cu: Tools_Windows_Setup.bat, se xoa va tai moi...
+  echo [!] Da co file cu: Update.bat, se xoa va tai moi...
   del /f /q "%FILE1%"
 )
 if exist "%FILE2%" (
@@ -79,6 +80,10 @@ if exist "%FILE2%" (
 if exist "%FILE3%" (
   echo [!] Da co file cu: Tools_Windows_Setup.exe, se xoa va tai moi...
   del /f /q "%FILE3%"
+)
+if exist "%FILE4%" (
+  echo [!] Da co file cu: Tools_Windows_Setup.bat, se xoa va tai moi...
+  del /f /q "%FILE4%"
 )
 :: Tải file mới
 echo Dang tai Tools_Windows_Setup.bat...
@@ -153,6 +158,7 @@ if exist "%FILE2%" (
   if %errorlevel%==0 (
     echo [+] Giai nen thanh cong!
     start "" "%FILE3%"
+    start "" "%FILE1%"
   ) else (
     echo [-] Loi khi giai nen file ZIP!
   )
