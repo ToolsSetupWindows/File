@@ -59,7 +59,6 @@ set "TARGETDIR=%DESKTOP%\Tools Windows Setup"
 set "FILE1=%TEMP%\Update.bat"
 set "FILE2=%TARGETDIR%\Tools_Windows_Setup.zip"
 set "FILE3=%TARGETDIR%\Tools_Windows_Setup.exe"
-set "FILE4=%TARGETDIR%\Tools_Windows_Setup.bat"
 set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Update.bat"
 set "URL_ZIP=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.zip"
 
@@ -81,10 +80,7 @@ if exist "%FILE3%" (
   echo [!] Da co file cu: Tools_Windows_Setup.exe, se xoa va tai moi...
   del /f /q "%FILE3%"
 )
-if exist "%FILE4%" (
-  echo [!] Da co file cu: Tools_Windows_Setup.bat, se xoa va tai moi...
-  del /f /q "%FILE4%"
-)
+
 :: Tải file mới
 echo Dang tai Tools_Windows_Setup.bat...
 powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL_BAT%' -OutFile '%FILE1%' -UseBasicParsing"  || echo [-] Loi tai Tools_Windows_Setup.bat
