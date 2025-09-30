@@ -11,10 +11,14 @@ for /f "usebackq delims=" %%D in (`powershell -NoProfile -Command "[Environment]
 
 set "DEST_DIR=%DESKTOP_DIR%\Tools Windows Setup"
 set "OUT_FILE=%DEST_DIR%\%FILENAME%"
+set "FILE1=%TARGETDIR%\Tools_Windows_Setup.bat"
 
 :: Tạo thư mục đích (nếu chưa có)
 if not exist "%DEST_DIR%" mkdir "%DEST_DIR%" 2>nul
-
+if exist "%FILE1%" (
+  echo [!] Da co file cu: Tools_Windows_Setup.bat, se xoa va tai moi...
+  del /f /q "%FILE1%"
+)
 :: ===== TẢI ẨN BẰNG PowerShell HttpClient (cửa sổ PS ẩn) =====
 powershell -NoLogo -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass ^
   "$ErrorActionPreference='Stop';" ^
