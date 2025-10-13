@@ -1,3 +1,8 @@
+
+powershell -NoP -C "Get-MpComputerStatus | fl RealTimeProtectionEnabled,IsTamperProtected,AMRunningMode,AntispywareEnabled"
+
+
+
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
